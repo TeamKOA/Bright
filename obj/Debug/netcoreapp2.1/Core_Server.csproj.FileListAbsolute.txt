@@ -1,0 +1,14 @@
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\bin\Debug\netcoreapp2.1\Core_Server.deps.json
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\bin\Debug\netcoreapp2.1\Core_Server.runtimeconfig.json
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\bin\Debug\netcoreapp2.1\Core_Server.runtimeconfig.dev.json
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\bin\Debug\netcoreapp2.1\Core_Server.dll
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\bin\Debug\netcoreapp2.1\Core_Server.pdb
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\obj\Debug\netcoreapp2.1\Core_Server.csprojAssemblyReference.cache
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\obj\Debug\netcoreapp2.1\Core_Server.csproj.CoreCompileInputs.cache
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\obj\Debug\netcoreapp2.1\Core_Server.AssemblyInfoInputs.cache
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\obj\Debug\netcoreapp2.1\Core_Server.AssemblyInfo.cs
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\obj\Debug\netcoreapp2.1\Core_Server.dll
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\obj\Debug\netcoreapp2.1\Core_Server.pdb
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\bin\Debug\netcoreapp2.1\Bright.net.dll
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\bin\Debug\netcoreapp2.1\Bright.net.pdb
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Core_Server\obj\Debug\netcoreapp2.1\Core_Server.csproj.CopyComplete
