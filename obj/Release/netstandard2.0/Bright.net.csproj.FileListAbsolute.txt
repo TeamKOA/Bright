@@ -1,0 +1,9 @@
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\bin\Release\netstandard2.0\Bright.net.deps.json
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\bin\Release\netstandard2.0\Bright.net.dll
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\bin\Release\netstandard2.0\Bright.net.pdb
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\obj\Release\netstandard2.0\Bright.net.csprojAssemblyReference.cache
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\obj\Release\netstandard2.0\Bright.net.csproj.CoreCompileInputs.cache
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\obj\Release\netstandard2.0\Bright.net.AssemblyInfoInputs.cache
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\obj\Release\netstandard2.0\Bright.net.AssemblyInfo.cs
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\obj\Release\netstandard2.0\Bright.net.dll
+E:\Dateien\Documents\Visual Studio 2017\Projects\Shadow.net\Bright.net\obj\Release\netstandard2.0\Bright.net.pdb
