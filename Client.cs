@@ -14,13 +14,15 @@ namespace Bright.net
     {
         readonly string username;
         readonly string rsaXMLString;
-        readonly string serverRSAString;
+        readonly string serverSignatureString;
 
         TcpClient client;
         NetworkStream stream;
 
         ICryptoTransform aesEncryptor;
         ICryptoTransform aesDecryptor;
+
+        string serverSessionRSA;
         
         public void Connect(string hostname, int port)
         {
@@ -60,7 +62,8 @@ namespace Bright.net
                 {
                     try
                     {
-                        serverRSA.FromXmlStringCore(Encoding.ASCII.GetString(data, 4, data.Length - 4));
+                        serverSessionRSA = Encoding.ASCII.GetString(data, 4, data.Length - 4);
+                        serverRSA.FromXmlStringCore(serverSessionRSA);
 
                         serverRN = BitConverter.ToInt32(data, 0);
                     }
@@ -98,12 +101,65 @@ namespace Bright.net
                 }
                 // Secure connection established
                 Console.WriteLine("Secure connection established");
+                
 
-                packet = new Packet(PacketType.Authenticate, OPCode.AuthenticateClient, username, Encoding.ASCII.GetBytes(Console.ReadLine()));
-                SendEncryptedPacket(stream, packet, aesEncryptor);
+            }
+            finally
+            {
+                Dispose();
+            }
+        }
 
-                packet = ReceiveEncryptedPacket(stream, aesDecryptor);
-                Console.WriteLine(packet.Username + " : " + Encoding.ASCII.GetString(packet.Message));
+        public bool CheckServer()
+        {
+            try
+            {
+                Packet packet = new Packet(PacketType.Authenticate, OPCode.RequestServerCertificate, "", new byte[0]);
+                SendEncryptedPacket(packet);
+
+                packet = ReceiveEncryptedPacket();
+                if (packet.Type == PacketType.Authenticate && packet.OPCode == OPCode.ServerCertificate)
+                {
+                    Certificate certificate = new Certificate(packet.Message);
+                    if (Encoding.ASCII.GetString(certificate.Data) != serverSessionRSA || DateTime.UtcNow.Subtract(certificate.Time).TotalMinutes > 1)
+                        return false;
+
+                    using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                    {
+                        rsa.FromXmlStringCore(serverSignatureString);
+                        return certificate.Verify(rsa);
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            finally
+            {
+                Dispose();
+            }
+        }
+
+        public OPCode Authenticate()
+        {
+            try
+            {
+                Certificate certificate = new Certificate(username, new byte[0]);
+                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                {
+                    rsa.FromXmlStringCore(rsaXMLString);
+                    certificate.Sign(rsa);
+                }
+                Packet packet = new Packet(PacketType.Authenticate, OPCode.AuthenticateClient, username, certificate.GetBytes());
+                SendEncryptedPacket(packet);
+
+                packet = ReceiveEncryptedPacket();
+                if (packet.Type != PacketType.Authenticate)
+                    return OPCode.AuthenticationError;
+
+                return packet.OPCode;
             }
             finally
             {
@@ -115,6 +171,15 @@ namespace Bright.net
         {
             this.username = username;
             this.rsaXMLString = rsaXMLString;
+        }
+
+        private void SendEncryptedPacket(Packet packet)
+        {
+            Bright.SendEncryptedPacket(stream, packet, aesEncryptor);
+        }
+        private Packet ReceiveEncryptedPacket(int bufferSize = 256)
+        {
+            return Bright.ReceiveEncryptedPacket(stream, aesDecryptor, bufferSize);
         }
 
         private void Dispose()

@@ -12,9 +12,14 @@ namespace Bright.net
         ConnectClientIV,
         ConnectServerIV,
 
+        RequestServerCertificate,
+        ServerCertificate,
+
         AuthenticateClient,
         AuthenticationOK,
-        AuthenticationError
+        AuthenticationError,
+
+        CryptographicError,
     }
 
     public static class CodeDescription
