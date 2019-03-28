@@ -42,18 +42,17 @@ namespace Bright.net
                         byte[] data = packet.Message;
 
                         int clientRN;
-                        try
-                        {
-                            clientRSA = new RSACryptoServiceProvider();
-                            clientRSA.FromXmlStringCore(Encoding.ASCII.GetString(data, 4, data.Length - 4));
+                        //try
+                        //{
+                        //    clientRSA = new RSACryptoServiceProvider();
+                        //    clientRSA.FromXmlStringCore(Encoding.ASCII.GetString(data, 4, data.Length - 4));
 
-                            clientRN = BitConverter.ToInt32(data, 0);
-                        }
-                        catch (CryptographicException e)
-                        {
-                            throw new CryptographicException("Client string invalid", e);
-                            throw;
-                        }
+                        clientRN = BitConverter.ToInt32(data, 0);
+                        //}
+                        //catch (CryptographicException e)
+                        //{
+                        //    throw new CryptographicException("Client string invalid", e);
+                        //}
 
 
                         RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
@@ -66,7 +65,7 @@ namespace Bright.net
                         int serverRN = BitConverter.ToInt32(temp, 0);
                         temp.CopyTo(data, 0);
 
-                        packet = new Packet(PacketType.Connect, OPCode.ConnectSecureClient, "", data);
+                        packet = new Packet(PacketType.Connect, OPCode.ConnectServerRNKey, "", data);
                         packet.Send(stream);
 
                         packet = ReceivePacket(stream);
@@ -74,12 +73,14 @@ namespace Bright.net
 
                         using (SHA256CryptoServiceProvider sha = new SHA256CryptoServiceProvider())
                         {
-                            serverAES = new AesCryptoServiceProvider();
-                            serverAES.Key = sha.ComputeHash(BitConverter.GetBytes(serverRN * (long)clientRN + secret));
+                            serverAES = new AesCryptoServiceProvider
+                            {
+                                Key = sha.ComputeHash(BitConverter.GetBytes(serverRN * (long)clientRN + secret))
+                            };
                         }
 
                         // Exchange IVs
-                        packet = new Packet(PacketType.Connect, OPCode.ConnectSecureClient, "", serverAES.IV);
+                        packet = new Packet(PacketType.Connect, OPCode.ConnectServerIV, "", serverAES.IV);
                         packet.Send(stream);
                         aesEncryptor = serverAES.CreateEncryptor();
                         
@@ -89,17 +90,11 @@ namespace Bright.net
                         aesDecryptor = serverAES.CreateDecryptor();
                         // Secure connection established
                         Console.WriteLine("Secure connection established");
-                        Console.WriteLine(BitConverter.ToString(serverAES.Key));
 
-                        //while (!stream.DataAvailable) { System.Threading.Thread.Sleep(10); }
-                        //data = new byte[256];
-                        //int count = stream.Read(data, 0, data.Length);
-                        
-                        Console.WriteLine(BitConverter.ToString(data));
                         packet = ReceiveEncryptedPacket(stream, aesDecryptor);
                         Console.WriteLine(packet.Username + " : " + Encoding.ASCII.GetString(packet.Message));
 
-                        packet = new Packet(PacketType.Authenticate, OPCode.AuthenticateClient, packet.Username, Encoding.ASCII.GetBytes(Console.ReadLine()));
+                        packet = new Packet(PacketType.Authenticate, OPCode.AuthenticationOK, packet.Username, Encoding.ASCII.GetBytes(Console.ReadLine()));
                         SendEncryptedPacket(stream, packet, aesEncryptor);
                     }
 

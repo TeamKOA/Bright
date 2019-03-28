@@ -6,8 +6,12 @@ namespace Bright.net
 {
     public enum OPCode : ushort
     {
-        ConnectSecureClient,
-        ConnectSecureServer,
+        ConnectClientRN,
+        ConnectServerRNKey,
+        ConnectClientSecret,
+        ConnectClientIV,
+        ConnectServerIV,
+
         AuthenticateClient,
         AuthenticationOK,
         AuthenticationError
